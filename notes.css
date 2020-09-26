@@ -1,0 +1,26 @@
+.left {
+    width: 200px;
+}
+
+.right {
+    border-left: 1px solid;    
+    background-color: antiquewhite;
+    padding: 5px;
+    width: 600px;
+    height: 500px;
+}
+
+.left, .right {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.right textarea {
+    border: 1px solid #bbb0b0;
+    resize: none;
+    display: none;
+}
+
+.right textarea:focus {
+    outline-color: #bbb0b0;
+}
