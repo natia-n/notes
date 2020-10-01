@@ -1,18 +1,31 @@
-const not=document.getElementById("new-note");
-// const del=document.getElementById("delete");
+const buuttonNewNote=document.getElementById("new-note");
+const buttonDelete=document.getElementById("delete");
 const newText=document.getElementById("text");
-const save=document.getElementById("save");
-let noteSave=document.getElementById("1");
+const buttonSave=document.getElementById("save");
+const noteSaveUl=document.getElementById("save-note");
+let date=document.getElementById("date");
 
-not.addEventListener('click', function(){
+let notes=[];  
+
+buuttonNewNote.addEventListener('click', function(){
     console.log("create");
-    newText.style.display = "block"; //css მქონდა დისპლეის დამალვა და ამით გამოვაჩინეთ
+    newText.style.display = "block"; //css მქონდა დისპლეის დამალვა და ამით გამოვაჩინეთ   
 });
 
-save.addEventListener('click', function(){
-    const words = newText.value.substring(0, 13);
-    
-    noteSave.textContent=words+"...";
-    console.log(words);
-});
+buttonSave.addEventListener('click', function(){
+    console.log("save");
+    const words = newText.value.substring(0, 13); // სათაურად ვაჩვენებ პირველ 14 სიმბოლოს
+    const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li            
+    li.textContent=words+"..."; // სათაურს დაემატოს ...
+    noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
+    notes.push(li); // li ჩაფუშოს notes-ს მასივში
+      
+    newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
+    newText.value = ""; // დისპლეის ტექსტი განულდეს
+    date.textContent = Date().substring(4, 25); // გამოჩნდეს შენახვის დრო 
+    buttonSave="block";
+
+    console.log(notes);
+    console.log(date.textContent);
+});       
 
