@@ -13,18 +13,20 @@ buuttonNewNote.addEventListener('click', function(){
 });
 
 buttonSave.addEventListener('click', function(){
-    console.log("save");
-    const words = newText.value.substring(0, 13); // სათაურად ვაჩვენებ პირველ 14 სიმბოლოს
-    const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li            
-    li.textContent=words+"..."; // სათაურს დაემატოს ...
-    noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
-    notes.push(li); // li ჩაფუშოს notes-ს მასივში
+    if (newText.value!=""){ 
+        console.log("save");
+        const words = newText.value.substring(0, 13); // სათაურად ვაჩვენებ პირველ 14 სიმბოლოს
+        const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li            
+        li.textContent=words+"..."; // სათაურს დაემატოს ...
+        noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
+        notes.push(li); // li ჩაფუშოს notes-ს მასივში
       
-    newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
-    newText.value = ""; // დისპლეის ტექსტი განულდეს
-    date.textContent = Date().substring(4, 25); // გამოჩნდეს შენახვის დრო 
-    buttonSave="block";
+        newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
+        newText.value = ""; // დისპლეის ტექსტი განულდეს
 
+        date.textContent = Date().substring(4, 25); // გამოჩნდეს შენახვის დრო 
+    };    
+    
     console.log(notes);
     console.log(date.textContent);
 });       
