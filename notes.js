@@ -5,6 +5,7 @@ const buttonSave=document.getElementById("save");
 const noteSaveUl=document.getElementById("save-note");
 let date=document.getElementById("date");
 
+
 let notes=[];  
 
 buuttonNewNote.addEventListener('click', function(){
@@ -19,15 +20,29 @@ buttonSave.addEventListener('click', function(){
         const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li            
         li.textContent=words+"..."; // სათაურს დაემატოს ...
         noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
-        notes.push(li); // li ჩაფუშოს notes-ს მასივში
-      
+        const id = Date.now();
+        notes.push({id: id, text: newText.value}); // li ჩაფუშოს notes-ს მასივში
+        li.id = id;
+        li.addEventListener("click", editNote);
+        console.log(notes); 
+
         newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
         newText.value = ""; // დისპლეის ტექსტი განულდეს
 
         date.textContent = Date().substring(4, 25); // გამოჩნდეს შენახვის დრო 
-    };    
-    
-    console.log(notes);
-    console.log(date.textContent);
-});       
+    };        
+      
+});   
 
+function editNote(){
+    
+    
+};
+
+
+// if (li != ''){
+//     li.addEventListener('click', function(){   
+//         console.log("corect"); 
+        
+// });
+// }; 
