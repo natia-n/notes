@@ -43,12 +43,25 @@ buttonSave.addEventListener('click', function(){
         li.id = id;
 
         li.addEventListener("click", editNote);
-        console.log('edit'); 
+        console.log('edit');          
 
         newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
-        newText.value = ""; // დისპლეის ტექსტი განულდეს        
-    };       
-});   
+        newText.value = ""; // დისპლეის ტექსტი განულდეს    
+
+    }else{
+        const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li               
+        li.textContent="ცარიელი "+ Date().substring(15, 25); // სათაურს დაემატოს ...და შენახვის დრო
+        noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
+        const id = Date.now(); // მილიწამები ავიღოთ id, არასდროს არ გამეორდება
+        notes.push({id: id, text: newText.value}); // li ჩაფუშოს notes-ს მასივში
+        li.id = id;
+
+        li.addEventListener("click", editNote);
+        console.log('edit');        
+
+        newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს 
+    }
+})   
 
 
 function editNote(){
@@ -58,36 +71,31 @@ function editNote(){
         if(notes[i].id==x){              //ვეძებთ li-ში ამ აიდს
             newText.value=notes[i].text; // ახალ დისპლეიში ვსვავთ შენახული li-ს ტექსტს 
             console.log(newText.value);
-
-            buttonSave.addEventListener('click', function(){
-                notes[i].text=newText.value;
-                console.log(notes[i].text);
-            });           
-            
-            buttonDelete.addEventListener('click', deleteNote);
-            console.log('delete');
-              
-
+            notes[i].text=newText.value; // li-ში ვინახავთ ბოლო დაკორექტირებულ ტექსტს
         };   
     };
-
 };
+
+// li.addEventListener("click", deleteNote); //სად ჩავსვა ??????????
+// console.log('edit');
+
 
 function deleteNote(){
     alert('კარგად დაფიქრდი :(');
 
     newText.style.display = "block";     // ვაჩენთ ახალ დისპლეის
-    let x=this.id;                       //ვინახავთ აქტიური notes აიდს
+    let x=this.id;  //ვინახავთ აქტიური notes აიდს
+    console.log(x);
     for(let i=0; i<notes.length; i++){
-        if(notes[i].id==x){              //ვეძებთ li-ში ამ აიდს
+        if(notes[i].id==x){   //ვეძებთ li-ში ამ აიდს
             newText.value=notes[i].text; // ახალ დისპლეიში ვსვავთ შენახული li-ს ტექსტს
-            console.log(x);
-   
-            notes[i]=notes[notes.length-1];
+               
+            notes[i]=notes[notes.length-1]; // მასივის ბოლო ელემენტს ვინახავთ აქტიურ i ელემენტში
             notes.pop();
-            removeChild(this.li);
+            // removeChild(this.li); // არ იშლება ??????????
         };    
     };      
 };
 
-// editNote() შენახვის რილაკი არ მუშაობს buttonDelete
+// შენახვა ხდება მხოლოდ ახალ notes-ში (სადაც ედიტირება ხდება იქ არა)
+// მოშვლის ღილაკი არ მუშაობს
