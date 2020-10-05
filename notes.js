@@ -89,6 +89,7 @@ buttonDelete.addEventListener('click', function(){
                 notes[i]=notes[notes.length-1];
                 notes.pop();
                 console.log(notes);
+                myNote = null; // მოშლის შემდეგ Note ტექსტი გაცარიელდეს
             }
         }
     }
