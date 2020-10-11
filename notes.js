@@ -8,6 +8,13 @@
 //HTML: button, textarea, ul
 //JAVASRIPT: Events (click, change), Date, 
 //document-ზე მოქმედებებისთვის (ელემენტის შექმნა, ჩამატება, რედაქტირება, წაშლა) 
+//ზევითა შუა ნაწილში ახლანდელი დრო რომ ჩანს, თუ მოვნიშნავთ რომელიმე ნოუთს მისი შექმნის დრო გამოჩნდეს, თუ ახალს ვქნით, მაშინ ახლანდელი დრო
+//შენახული ნოუთის სათაური იყოს მისი პირველი სტრიქონი. გამოიყენეთ ჯავასკრიპტის split ფუნქცია. 
+//(css-ის საშუალებით შეგიძლიათ ერთ ხაზში დაწეროთ ეგ სათაური ისე, რომ თუ არ დაეტევა მრავალწერტილი დაეწეროს გვერდით) 
+//დაამატეთ search (ძებნის) ფუნქციონალი. როცა დავიწყებ ძებნის ველში წერას ავტომატურად მხოლოდ ისეთი ნოუთები დამიტოვოს სიაში, 
+//რომლებშიც მეორდება ის ფრაზა რაც საძიებო ველში მიწერია 
+//შეინახეთ შეყვანილი ნოუთები localStorage -ში js-ში
+//მისი საშუალებით როცა გვერდს დაარეფრეშებთ ან ახლიდან ჩართავთ ბრაუზერს, ძველი შენახული ნოუთები არ დაიკარგება. 
 
 const buuttonNewNote=document.getElementById("new-note");
 const buttonDelete=document.getElementById("delete");
@@ -71,26 +78,28 @@ function editNote(){
     console.log(myNote, notes, x);
 
     newText.value=myNote.text; // ახალ დისპლეიში ვსვავთ შენახული li-ს ტექსტს 
-    console.log(newText.value);
-    myNote.text=newText.value;    
+    console.log(newText.value);    
 };
 
 buttonDelete.addEventListener('click', function(){
-    alert(':('); 
-    if(myNote !== null){ //თუ აქტიური Note არ აის null
-        document.getElementById(myNote.id).remove(); //მოშალოს ეს Note
-        newText.style.display = "none"; //მოშლის შემდეგ დისპლეი დაიმალოს  
-        newText.value = ""; // დისპლეის ტექსტი განულდეს
-
-        let x=myNote.id;
-        console.log(x);
-        for (let i=0; i<notes.length; i++){
-            if(notes[i].id==x){
-                notes[i]=notes[notes.length-1];
-                notes.pop();
-                console.log(notes);
-                myNote = null; // მოშლის შემდეგ Note ტექსტი გაცარიელდეს
+    // prompt(title, default);
+    if(confirm()){
+        if(myNote !== null){ //თუ აქტიური Note არ აის null
+            document.getElementById(myNote.id).remove(); //მოშალოს ეს Note
+            newText.style.display = "none"; //მოშლის შემდეგ დისპლეი დაიმალოს  
+            newText.value = ""; // დისპლეის ტექსტი განულდეს
+    
+            let x=myNote.id;
+            console.log(x);
+            for (let i=0; i<notes.length; i++){
+                if(notes[i].id==x){
+                    notes[i]=notes[notes.length-1];
+                    notes.pop();
+                    console.log(notes);
+                    myNote = null; // მოშლის შემდეგ Note ტექსტი გაცარიელდეს
+                }
             }
         }
     }
+    
 })
