@@ -21,21 +21,41 @@ const buttonDelete=document.getElementById("delete");
 const newText=document.getElementById("text");
 const buttonSave=document.getElementById("save");
 const noteSaveUl=document.getElementById("save-note");
-let date=document.getElementById("date");
-let notes=[];  
+const date=document.getElementById("date");
+const search=document.getElementById("search");
+
 let myNote = null; // null შევინახეთ ცვლადში
+let taimer; // setInterval უნდა შევინახო
+let notes = JSON.parse(localStorage.getItem("notes")) ?? [];
 
 
-date.textContent=Date().substring(4, 25);
-    setInterval(() => {
-        date.textContent=Date().substring(4, 25); // გამოჩნდეს გახსნის დრო
-    }, 1000);
+for(let i = 0; i < notes.length; i++) {
+    const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li     
+    const words = notes[i].text.substring(0, 13); // სათაურად ვაჩვენებ პირველ 14 სიმბოლოს               
+    li.textContent= (words == "" ? "ცარიელი " : words+"...  ") + notes[i].date; 
+    // თუ ცარიელია, დაწეროს "ცალიელი", თუ არა: მისი ტექსტი და სათაურს დაემატოს ...და შენახვის დრო
+    noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
+    const id = notes[i].id; // მილიწამები ავიღოთ id (არასდროს არ გამეორდება)
+    li.id = id;
+    li.addEventListener("click", editNote); // აქედან გაეშვას li (ამ ფუნქციაში არის შექმნილი li)
+}
 
+
+function taimerInterval (){
+    date.textContent=Date().substring(4, 25);
+    taimer=setInterval(() => {
+    date.textContent=Date().substring(4, 25); // გამოჩნდეს გახსნის დრო
+}, 1000);
+}
+    
 buuttonNewNote.addEventListener('click', function(){
+    taimerInterval();
     console.log("create");
     newText.style.display = "block"; //css მქონდა დისპლეის დამალვა და ამით გამოვაჩინეთ 
-});
+    newText.value = ""; // დისპლეის ტექსტი განულდეს  
+    myNote = null;
 
+});
 
 buttonSave.addEventListener('click', function(){
     if(myNote !== null){ //თუ აქტიური Note არ აის null
@@ -46,28 +66,30 @@ buttonSave.addEventListener('click', function(){
             if(notes[i].id==x){
                 notes[i]=notes[notes.length-1];
                 notes.pop();
-                console.log(notes);
-            }
-        }
-    }
+                console.log(notes);               
+            };
+        };
+    };
     console.log("save");
     const li = document.createElement("li"); // htm-ში დაემატა ახალი ელემენტი li     
     const words = newText.value.substring(0, 13); // სათაურად ვაჩვენებ პირველ 14 სიმბოლოს               
-    li.textContent= (words == "" ? "ცარიელი " : words+"...  ") + Date().substring(15, 25); 
+    li.textContent= (words == "" ? "ცარიელი " : words+"...  ") + Date().substring(15, 21); 
     // თუ ცარიელია, დაწეროს "ცალიელი", თუ არა: მისი ტექსტი და სათაურს დაემატოს ...და შენახვის დრო
     noteSaveUl.appendChild(li); // Ul-ში დაამატოს შვილი li
     const id = Date.now(); // მილიწამები ავიღოთ id (არასდროს არ გამეორდება)
-    notes.push({id: id, text: newText.value}); // li ჩაფუშოს notes-ს მასივში
-    li.id = id;                 
-
+    li.id = id;
+    notes.push({id: id, text: newText.value, date: Date().substring(4, 21)}); // li ჩაფუშოს notes-ს მასივში
+    localStorage.setItem("notes", JSON.stringify(notes)); // შევინახე ბრაუზერში
     newText.style.display = "none"; //შენახვის შემდეგ დისპლეი დაიმალოს  
-    newText.value = ""; // დისპლეის ტექსტი განულდეს   
+    newText.value = ""; // დისპლეის ტექსტი განულდეს  
     
     li.addEventListener("click", editNote); // აქედან გაეშვას li (ამ ფუნქციაში არის შექმნილი li)
+   
     console.log('edit');   
+    
     myNote = null;  // შენახვის შემდეგ Note ტექსტი გაცარიელდეს
-})   
-
+   
+}); 
 
 function editNote(){
     newText.style.display = "block";     // ვაჩენთ ახალ დისპლეის
@@ -76,19 +98,18 @@ function editNote(){
        return n.id == x;
     });
     console.log(myNote, notes, x);
-
     newText.value=myNote.text; // ახალ დისპლეიში ვსვავთ შენახული li-ს ტექსტს 
+    clearInterval(taimer);
+    date.textContent=myNote.date;    
     console.log(newText.value);    
 };
 
 buttonDelete.addEventListener('click', function(){
-    // prompt(title, default);
     if(confirm()){
         if(myNote !== null){ //თუ აქტიური Note არ აის null
             document.getElementById(myNote.id).remove(); //მოშალოს ეს Note
             newText.style.display = "none"; //მოშლის შემდეგ დისპლეი დაიმალოს  
-            newText.value = ""; // დისპლეის ტექსტი განულდეს
-    
+            newText.value = ""; // დისპლეის ტექსტი განულდეს    
             let x=myNote.id;
             console.log(x);
             for (let i=0; i<notes.length; i++){
@@ -97,9 +118,14 @@ buttonDelete.addEventListener('click', function(){
                     notes.pop();
                     console.log(notes);
                     myNote = null; // მოშლის შემდეგ Note ტექსტი გაცარიელდეს
-                }
-            }
-        }
-    }
-    
-})
+                    clearInterval(taimer);
+                    // newText.style.display = "block";
+                };
+            };
+        };
+    };   
+});
+
+search.addEventListener('keyup', () => {
+    console.log(search.value);
+});

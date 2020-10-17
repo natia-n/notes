@@ -24,3 +24,8 @@
 .right textarea:focus {
     outline-color: #bbb0b0;
 }
+
+.left ul { /* ვახოს გაკეთებული*/
+    display: flex;
+    flex-direction: column-reverse;
+}
